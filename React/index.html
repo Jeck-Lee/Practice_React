@@ -16,14 +16,25 @@
       render();
     }
     function render() {
-      ReactDOM.render(<Container />, root);
+      ReactDOM.render(<App />, root);
     }
-    const Container = () => (
-      <div>
-        <h3>Total clicks: {counter}</h3>
-        <button onClick={countUp}>Click me</button>
-      </div>
-    );
-    render();
+    function App() {
+      // [undefined, f] 형식
+      // undefined type data는 실제 데이터고, f는 데이터를 바꿀 때 사용하는 function
+      const data = React.useState(373);
+      /* 아래와 동일
+      const counter = data[0];
+      const modifier = data[1];
+      */
+      const [counter, modifier] = data;
+
+      return (
+        <div>
+          <h3>Total clicks: {counter}</h3>
+          <button>Click me</button>
+        </div>
+      );
+    }
+    ReactDOM.render(<App />, root);
   </script>
 </html>
