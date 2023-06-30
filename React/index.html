@@ -10,12 +10,22 @@
         const root = document.getElementById("root");
          // createElement 안에 적는 element는 실제 html과 동일해야함
          // argument를 사용하여 id와 text 등을 넣는 방식은 실무에서는 사용하지 않음
-        const span = React.createElement(
-            "span", 
-            { id: "my-span", style: { color: 'red' } }, 
+        const h3 = React.createElement(
+            "h3", 
+            { 
+                onMouseEnter: () => console.log("mouse enter"),
+            }, 
             "Hello I'm a span"
         );
-        ReactDOM.render(span, root);
+        const btn = React.createElement(
+            "button", {
+            onClick: () => console.log("im clicked"),
+            }, 
+            "click me"
+        );
+
+        const container = React.createElement("div", null, [h3,btn]);
+        ReactDOM.render(container, root);
     </script>
 
 </html>
