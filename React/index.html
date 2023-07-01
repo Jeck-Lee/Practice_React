@@ -9,29 +9,32 @@
   <!-- JSX 변환. 이건 느린 방식으로, 다른 많은 방법이 존재 -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
-    const root = document.getElementById("root");
-
     function App() {
-      // [undefined, f] 형식
-      // undefined type data는 실제 데이터고, f는 데이터를 바꿀 때 사용하는 function
-      const [counter, setCounter] = React.useState(0);
-      const onClick = () => {
-        // 어떤 값을 부여하던 그 값으로 업데이트하고 리렌더링
-        // setCounter(counter + 1);
-        /* 값 대신 function을 넣을 수도 있음
-        위의 형태로 구현하게 되면 다른 곳에서 counter가 업데이트 될 수 있지만, 아래 형태로 구현하면 current가 현재 값임이 항상 보장됨
-        -> 위의 형태로 구현하면 counter가 다른 곳에서 업데이트 돼도 반영이 안 됨
-        */
-        setCounter((current) => current + 1);
+      const [minutes, setMinutes] = React.useState();
+      const onChange = (event) => {
+        setMinutes(event.target.value);
       };
-
+      /*
+      class와 for는 이미 js에서 사용되고 있기 때문에, className & htmlFor로 사용해야 함
+      */
       return (
         <div>
-          <h3>Total clicks: {counter}</h3>
-          <button onClick={onClick}>Click me</button>
+          <h1 className="h1">Super Converter</h1>
+          <label htmlFor="minutes">Minutes</label>
+          <input
+            value={minutes}
+            id="minutes"
+            placeholder="Minutes"
+            type="number"
+            onChange={onChange}
+          />
+          <h4>You want to convert {minutes}</h4>
+          <label htmlFor="hours">Hours</label>
+          <input id="hours" placeholder="Hours" type="number" />
         </div>
       );
     }
+    const root = document.getElementById("root");
     ReactDOM.render(<App />, root);
   </script>
 </html>
