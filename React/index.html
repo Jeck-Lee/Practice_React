@@ -9,33 +9,38 @@
   <!-- JSX 변환. 이건 느린 방식으로, 다른 많은 방법이 존재 -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
-    // props가 첫번째 argumet(property)이자 유일한 인자
-    function Btn({ text, bigFont }) {
+    function Btn({ text, onClick }) {
+      /*
+      부모의 state 값이 변경되면 모든 자식 컴포넌트가 rerendering이 되므로, 텍스트가 바뀌지 않은 continue button도 새로 그려짐
+      -> Memo 사용하여 props가 변하지 않으면 rerendering 되지 않도록 할 수 있음 (L.33)
+      */
+      console.log(text, "was rendered");
       return (
         <button
+          onClick={onClick}
           style={{
             backgroundColor: "tomato",
             color: "white",
             padding: "10px 20px",
             border: 0,
             borderRadius: 10,
-            fontSize: bigFont ? 18 : 11,
           }}
         >
-          {/*
-            function Btn(props) 형태로 사용하게 되면 text를 꺼내기 위해 아래처럼 작성해야 함
-            하지만 지금처럼 function Btn( {text} ) 형태의 shortcut을 사용하게 되면 text를 사용할 때 그냥 text로 사용하면 됨
-            props.text
-          */}
           {text}
         </button>
       );
     }
+    const MemorizedBtn = React.memo(Btn);
     function App() {
+      const [value, setValue] = React.useState("Save Changes");
+      const changeValue = () => setValue("Revert Changes");
       return (
         <div>
-          <Btn text="Save Changes" bigFont={true} />
-          <Btn text="Continue" />
+          {/*
+            onClick event listener를 추가한 게 아니라, props argument 이름을 onClick으로 설정해준것
+          */}
+          <MemorizedBtn text={value} onClick={changeValue} />
+          <MemorizedBtn text="Continue" />
         </div>
       );
     }
