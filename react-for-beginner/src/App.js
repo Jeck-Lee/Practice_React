@@ -2,42 +2,52 @@ import Button from "./Button";
 import styles from "./App.module.css";
 import { useState, useEffect } from "react";
 
-function App() {
-  // create react app을 사용하기 때문에 React.를 적어줄 필요 없음
-  const [counter, setCounter] = useState(0);
-  const [searchText, setSearchText] = useState("");
-  const onClick = () => setCounter((prev) => prev + 1);
-  const onChange = (event) => setSearchText(event.target.value);
-  console.log("I run all the time");
-  // 최초 렌더링 이후에는 state 값이 변해도 rerendering 되지 않도록 해줌
-  // -> 코드가 한 번만 실행될 수 있도록 보호해줌 (ex. API)
+function Hello() {
+  /* 1.
   useEffect(() => {
-    console.log("I run only once.");
+    console.log("new hello created");
+    // cleanup function
+    return () => console.log("destroyed");
   }, []);
-  // 이 코드는 지정한 searchText가 변화할 때만 실행됨
-  // -> React가 지정한 키워드를 지켜보고 있다가, 해당 키워드가 변화할 때만 실행해주는 것. 따라서 배열을 비워두면 지켜볼 게 없으므로 한 번만 실행됨.
-  useEffect(() => {
-    if (searchText !== "") {
-      console.log("I run when 'searchText' changes");
-    }
-  }, [searchText]);
-  useEffect(() => {
-    console.log("I run when 'counter' changes");
-  }, [counter]);
-  useEffect(() => {
-    console.log("I run when 'searchText' & 'counter' change");
-  }, [searchText, counter]);
+  */
 
+  /* 2.
+  function hiFn() {
+    console.log("new hello created");
+    // 컴포넌트가 파괴될 때도 function을 실행하고 싶으면, hiFn이 해당 function을 리턴하면 됨
+    // 자주 사용하는 기능은 아님
+    return byeFn;
+  }
+  function byeFn() {
+    console.log("destroyed");
+  }
+  useEffect(hiFn, []);
+  */
+
+  /* 3. 
+  useEffect(function () {
+    console.log("new hello created");
+    return function () {
+      console.log("destroyed");
+    };
+  }, []);
+  */
+
+  /* 4. */
+  useEffect(() => {
+    console.log("new hello created");
+    return () => console.log("destroyed");
+  }, []);
+  return <h1>Hello</h1>;
+}
+
+function App() {
+  const [showing, setshowing] = useState(false);
+  const onClick = () => setshowing((prev) => !prev);
   return (
     <div>
-      <input
-        value={searchText}
-        onChange={onChange}
-        type="text"
-        placeholder="Search here..."
-      />
-      <h1>{counter}</h1>
-      <button onClick={onClick}>click me</button>
+      {showing ? <Hello /> : null}
+      <button onClick={onClick}>{showing ? "Hide" : "Show"}</button>
     </div>
   );
 }
