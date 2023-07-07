@@ -13,7 +13,6 @@ function App() {
     setTodos((currentArray) => [todo, ...currentArray]);
     setTodo("");
   };
-  console.log(todos);
   return (
     <div>
       <h1>My To Dos ({todos.length})</h1>
@@ -26,6 +25,16 @@ function App() {
         />
         <button>Add To Do</button>
       </form>
+      <hr />
+      <ul>
+        {
+          // Array 안의 모든 element에 대해 실행되고, 실행된 값의 결과로 이뤄진 새로운 Array를 return
+          todos.map((item, index) => (
+            // Each child in a list should have a unique "key" prop.
+            <li key={index}>{item}</li>
+          ))
+        }
+      </ul>
     </div>
   );
 }
