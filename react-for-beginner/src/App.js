@@ -1,53 +1,31 @@
-import Button from "./Button";
-import styles from "./App.module.css";
-import { useState, useEffect } from "react";
-
-function Hello() {
-  /* 1.
-  useEffect(() => {
-    console.log("new hello created");
-    // cleanup function
-    return () => console.log("destroyed");
-  }, []);
-  */
-
-  /* 2.
-  function hiFn() {
-    console.log("new hello created");
-    // 컴포넌트가 파괴될 때도 function을 실행하고 싶으면, hiFn이 해당 function을 리턴하면 됨
-    // 자주 사용하는 기능은 아님
-    return byeFn;
-  }
-  function byeFn() {
-    console.log("destroyed");
-  }
-  useEffect(hiFn, []);
-  */
-
-  /* 3. 
-  useEffect(function () {
-    console.log("new hello created");
-    return function () {
-      console.log("destroyed");
-    };
-  }, []);
-  */
-
-  /* 4. */
-  useEffect(() => {
-    console.log("new hello created");
-    return () => console.log("destroyed");
-  }, []);
-  return <h1>Hello</h1>;
-}
+import { useState } from "react";
 
 function App() {
-  const [showing, setshowing] = useState(false);
-  const onClick = () => setshowing((prev) => !prev);
+  const [todo, setTodo] = useState("");
+  const [todos, setTodos] = useState([]);
+  const onChange = (event) => setTodo(event.target.value);
+  const onSubmit = (event) => {
+    event.preventDefault();
+    if (todo === "") {
+      return;
+    }
+    // state가 const 변수이므로 직접 수정할 수 없음 (ex.todos.push("element");)
+    setTodos((currentArray) => [todo, ...currentArray]);
+    setTodo("");
+  };
+  console.log(todos);
   return (
     <div>
-      {showing ? <Hello /> : null}
-      <button onClick={onClick}>{showing ? "Hide" : "Show"}</button>
+      <h1>My To Dos ({todos.length})</h1>
+      <form onSubmit={onSubmit}>
+        <input
+          onChange={onChange}
+          value={todo}
+          type="text"
+          placeholder="Write your to do..."
+        />
+        <button>Add To Do</button>
+      </form>
     </div>
   );
 }
